@@ -1,0 +1,23 @@
+name: airbyte-connector-build
+on: [push]
+jobs:
+  build:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out repository code
+      uses: actions/checkout@v3
+    - name: Setup Python
+      uses: actions/setup-python@v4
+    - name: Install
+      run: ./abconw install
+    - name: Check
+      run: ./abconw check
+    - name: Test
+      run: ./abconw test
+    - name: Install secrets
+      env:
+        AB_SECRETS_PASSPHRASE: ${{ secrets.AB_SECRETS_PASSPHRASE }}
+      run: ./abconw secrets decrypt
+    - name: SAT
+      run: ./abconw sat -k test_config_match_spec

@@ -1,0 +1,2 @@
+-e build/airbyte/airbyte-integrations/bases/source-acceptance-test
+-e .
